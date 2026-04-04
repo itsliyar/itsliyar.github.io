@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Team Meeting Game</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --accent: #ffd54f;
+      --bg1: #5b2c6f;
+      --bg2: #7b1fa2;
+      --bg3: #c62828;
+      --bg4: #2e7d32;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3), var(--bg4));
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    .app {
+      width:100%;
+      max-width:1100px;
+      padding:22px;
+      box-sizing:border-box;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      align-items:center;
+      backdrop-filter: blur(6px);
+    }
+
+    h1{
+      margin:0;
+      font-size:22px;
+      letter-spacing:0.4px;
+      font-weight:600;
+      text-shadow:0 2px 10px rgba(0,0,0,0.35);
+    }
+
+    .top-controls{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+    }
+
+    .wheel-container{
+      width:100%;
+      display:flex;
+      gap:36px;
+      justify-content:center;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+
+    .wheel-card{
+      width:320px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.06));
+      padding:12px;
+      border-radius:12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    canvas{
+      width:300px;
+      height:300px;
+      border-radius:50%;
+      background: rgba(255,255,255,0.03);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45) inset;
+      border:6px solid rgba(255,255,255,0.06);
+    }
+
+    .row{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      background:#fff;
+      color:#111;
+      border:none;
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    }
+    .btn:active{ transform:translateY(1px); }
+
+    .input{
+      padding:8px 10px;
+      border-radius:8px;
+      border:none;
+      min-width:160px;
+      outline:none;
+    }
+
+    .result{
+      min-height:22px;
+      font-weight:700;
+      color:var(--accent);
+      text-shadow:0 2px 8px rgba(0,0,0,0.45);
+    }
+
+    .applause-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      margin-top:6px;
+    }
+
+    /* flower animation */
+    .flower {
+      position:fixed;
+      pointer-events:none;
+      font-size:22px;
+      will-change: transform, opacity;
+      animation: fall linear forwards;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.45);
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg) scale(0.9); opacity:1; }
+      70% { opacity:1; }
+      100% { transform: translateY(110vh) rotate(360deg) scale(0.6); opacity:0; }
+    }
+
+    /* responsive */
+    @media (max-width:760px){
+      .wheel-card{ width:92%; }
+      canvas{ width:260px; height:260px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Team meeting game">
+    <h1>Team Meeting Game</h1>
+
+    <div class="wheel-container" aria-hidden="false">
+      <!-- Names card -->
+      <div class="wheel-card" id="namesCard">
+        <canvas id="nameCanvas" width="300" height="300" aria-label="Names wheel"></canvas>
+        <div class="row">
+          <button class="btn" id="spinNameBtn">Spin Names</button>
+          <button class="btn" id="spinBothBtn">Spin Both</button>
+        </div>
+        <div class="result" id="nameResult" aria-live="polite"></div>
+
+        <div class="row" style="margin-top:6px;">
+          <input id="newName" class="input" placeholder="Add or remove name" />
+          <button class="btn" id="addNameBtn">Add</button>
+          <button class="btn" id="removeNameBtn">Remove</button>
+        </div>
+      </div>
+
+      <!-- Tasks card -->
+      <div class="wheel-card" id="tasksCard">
+        <canvas id="taskCanvas" width="300" height="300" aria-label="Tasks wheel"></canvas>
+        <div class="row">
+          <button class="btn" id="spinTaskBtn">Spin Tasks</button>
+        </div>
+        <div class="result" id="taskResult" aria-live="polite"></div>
+
+        <div class="row" style="margin-top:6px;">
+          <input id="newTask" class="input" placeholder="Add or remove task" />
+          <button class="btn" id="addTaskBtn">Add</button>
+          <button class="btn" id="removeTaskBtn">Remove</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="applause-row">
+      <button class="btn" id="applauseBtn">👏 Applause</button>
+      <div style="color:rgba(255,255,255,0.85); font-weight:600;">Press to celebrate — flowers will sprinkle</div>
+    </div>
+  </div>
+
+  <script>
+    /***********************
+     * Data and state
+     ***********************/
+    let names = ["Alice","Bob","Charlie","Diana","Ethan","Fiona"];
+    let tasks = ["Tell a joke","Share a fun fact","Give a compliment","Do a quick stretch","Sing a line","Describe your weekend"];
+    let spinningName = false;
+    let spinningTask = false;
+
+    const nameCanvas = document.getElementById('nameCanvas');
+    const nameCtx = nameCanvas.getContext('2d');
+    const taskCanvas = document.getElementById('taskCanvas');
+    const taskCtx = taskCanvas.getContext('2d');
+
+    const nameResultEl = document.getElementById('nameResult');
+    const taskResultEl = document.getElementById('taskResult');
+
+    /***********************
+     * Utility helpers
+     ***********************/
+    function clearCanvas(ctx){
+      ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+    }
+
+    function drawSegmentedWheel(ctx, items, centerX, centerY, radius, angleOffset=0, labelFont='16px Arial', labelColor='#fff', styleHueOffset=0){
+      const n = items.length;
+      if(n === 0) return;
+      const arc = (2 * Math.PI) / n;
+      for(let i=0;i<n;i++){
+        const start = angleOffset + i*arc;
+        const end = angleOffset + (i+1)*arc;
+        ctx.beginPath();
+        // nicer color palette using HSL
+        const hue = (styleHueOffset + i * (360 / Math.max(n,6))) % 360;
+        ctx.fillStyle = `hsl(${hue} 70% 50% / 0.95)`;
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, start, end);
+        ctx.closePath();
+        ctx.fill();
+
+        // label
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        const mid = start + (arc/2);
+        ctx.rotate(mid);
+        ctx.fillStyle = labelColor;
+        ctx.textAlign = 'right';
+        ctx.font = labelFont;
+        // wrap long text by trimming if necessary
+        let text = items[i];
+        if(text.length > 22) text = text.slice(0,19) + '...';
+        ctx.fillText(text, radius - 18, 8);
+        ctx.restore();
+      }
+
+      // decorative inner ring
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius - 36, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(0,0,0,0.12)';
+      ctx.fill();
+    }
+
+    /***********************
+     * Name wheel (static wheel, rotating stick)
+     ***********************/
+    function drawNameWheel(angle = 0){
+      const ctx = nameCtx;
+      clearCanvas(ctx);
+      const cx = ctx.canvas.width/2;
+      const cy = ctx.canvas.height/2;
+      const r = Math.min(cx,cy) - 6;
+      if(names.length === 0){
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('No names', cx, cy);
+        return;
+      }
+      drawSegmentedWheel(ctx, names, cx, cy, r, 0, '16px Arial', '#fff', 10);
+
+      // rotating stick drawn from center outward (points up at angle=0)
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      // stick
+      ctx.beginPath();
+      ctx.moveTo(0, 6);
+      ctx.lineTo(0, -r + 20);
+      ctx.strokeStyle = '#ffd54f';
+      ctx.lineWidth = 6;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // small arrowhead
+      ctx.beginPath();
+      ctx.moveTo(-8, -r + 28);
+      ctx.lineTo(0, -r + 12);
+      ctx.lineTo(8, -r + 28);
+      ctx.fillStyle = '#ffd54f';
+      ctx.fill();
+      ctx.restore();
+
+      // center hub
+      ctx.beginPath();
+      ctx.arc(cx, cy, 12, 0, Math.PI*2);
+      ctx.fillStyle = '#ffd54f';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, 6, 0, Math.PI*2);
+      ctx.fillStyle = '#7b1fa2';
+      ctx.fill();
+    }
+
+    function spinNameStick(){
+      if(spinningName) return;
+      if(names.length === 0){
+        nameResultEl.textContent = 'No names to pick';
+        return;
+      }
+      spinningName = true;
+      nameResultEl.textContent = '';
+      let angle = 0;
+      const totalSpin = Math.random() * 2200 + 1800; // degrees
+      const duration = 2200 + Math.random()*1200; // ms
+      const start = performance.now();
+
+      function step(now){
+        const t = Math.min(1, (now - start) / duration);
+        // ease out cubic
+        const ease = 1 - Math.pow(1 - t, 3);
+        const currentDeg = totalSpin * ease;
+        const currentRad = (currentDeg * Math.PI / 180);
+        angle = currentRad;
+        drawNameWheel(angle);
+        if(t < 1){
+          requestAnimationFrame(step);
+        } else {
+          // compute selected index
+          const n = names.length;
+          const arc = (2 * Math.PI) / n;
+          // pointer absolute angle relative to positive X axis:
+          // stick points to angle direction from top; absolute = -PI/2 + angle
+          let pointerAbs = -Math.PI/2 + angle;
+          pointerAbs = (pointerAbs % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
+          let index = Math.floor(pointerAbs / arc) % n;
+          // ensure index in range
+          index = (index + n) % n;
+          nameResultEl.textContent = 'Result: ' + names[index];
+          spinningName = false;
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    /***********************
+     * Task wheel (spinning wheel under fixed top pointer)
+     ***********************/
+    function drawTaskWheel(angle = 0){
+      const ctx = taskCtx;
+      clearCanvas(ctx);
+      const cx = ctx.canvas.width/2;
+      const cy = ctx.canvas.height/2;
+      const r = Math.min(cx,cy) - 6;
+      if(tasks.length === 0){
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('No tasks', cx, cy);
+        return;
+      }
+      drawSegmentedWheel(ctx, tasks, cx, cy, r, angle, '14px Arial', '#fff', 200);
+
+      // fixed pointer at top
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx, cy - r + 10);
+      ctx.strokeStyle = '#ffd54f';
+      ctx.lineWidth = 6;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // arrowhead
+      ctx.beginPath();
+      ctx.moveTo(cx - 8, cy - r + 22);
+      ctx.lineTo(cx, cy - r + 6);
+      ctx.lineTo(cx + 8, cy - r + 22);
+      ctx.fillStyle = '#ffd54f';
+      ctx.fill();
+
+      // center hub
+      ctx.beginPath();
+      ctx.arc(cx, cy, 12, 0, Math.PI*2);
+      ctx.fillStyle = '#ffd54f';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, 6, 0, Math.PI*2);
+      ctx.fillStyle = '#2e7d32';
+      ctx.fill();
+    }
+
+    function spinTaskWheel(){
+      if(spinningTask) return;
+      if(tasks.length === 0){
+        taskResultEl.textContent = 'No tasks to pick';
+        return;
+      }
+      spinningTask = true;
+      taskResultEl.textContent = '';
+      let angle = 0;
+      const totalSpin = Math.random() * 2200 + 1800; // degrees
+      const duration = 2200 + Math.random()*1200; // ms
+      const start = performance.now();
+
+      function step(now){
+        const t = Math.min(1, (now - start) / duration);
+        const ease = 1 - Math.pow(1 - t, 3);
+        const currentDeg = totalSpin * ease;
+        const currentRad = (currentDeg * Math.PI / 180);
+        angle = currentRad;
+        drawTaskWheel(angle);
+        if(t < 1){
+          requestAnimationFrame(step);
+        } else {
+          // pointer absolute angle is -PI/2 (top)
+          // segments are at angle + i*arc .. angle+(i+1)*arc
+          const n = tasks.length;
+          const arc = (2 * Math.PI) / n;
+          // compute which segment contains pointerAbs (-PI/2)
+          // compute relative = (pointerAbs - angle) normalized
+          let pointerAbs = -Math.PI/2;
+          let relative = (pointerAbs - angle) % (2*Math.PI);
+          relative = (relative + 2*Math.PI) % (2*Math.PI);
+          let index = Math.floor(relative / arc) % n;
+          index = (index + n) % n;
+          taskResultEl.textContent = 'Result: ' + tasks[index];
+          spinningTask = false;
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    /***********************
+     * Add / Remove handlers
+     ***********************/
+    function addName(){
+      const v = document.getElementById('newName').value.trim();
+      if(!v) return;
+      names.push(v);
+      document.getElementById('newName').value = '';
+      drawNameWheel();
+    }
+    function removeName(){
+      const v = document.getElementById('newName').value.trim();
+      if(!v) return;
+      names = names.filter(x => x.toLowerCase() !== v.toLowerCase());
+      document.getElementById('newName').value = '';
+      drawNameWheel();
+    }
+
+    function addTask(){
+      const v = document.getElementById('newTask').value.trim();
+      if(!v) return;
+      tasks.push(v);
+      document.getElementById('newTask').value = '';
+      drawTaskWheel();
+    }
+    function removeTask(){
+      const v = document.getElementById('newTask').value.trim();
+      if(!v) return;
+      tasks = tasks.filter(x => x.toLowerCase() !== v.toLowerCase());
+      document.getElementById('newTask').value = '';
+      drawTaskWheel();
+    }
+
+    /***********************
+     * Applause / flowers
+     ***********************/
+    const flowerEmojis = ['🌸','🌺','🌼','💐','🌷','🌻','🌹'];
+    function applause(){
+      // create many flowers across the top area
+      const count = 24;
+      for(let i=0;i<count;i++){
+        const el = document.createElement('div');
+        el.className = 'flower';
+        el.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
+        // random horizontal position across viewport
+        const left = Math.random() * 100;
+        el.style.left = left + 'vw';
+        // random delay and duration
+        const delay = (Math.random() * 0.6).toFixed(2) + 's';
+        const dur = (2.2 + Math.random()*1.6).toFixed(2) + 's';
+        el.style.animationDelay = delay;
+        el.style.animationDuration = dur;
+        // random size
+        const size = 18 + Math.random()*26;
+        el.style.fontSize = size + 'px';
+        document.body.appendChild(el);
+        // remove after animation
+        setTimeout(()=> {
+          el.remove();
+        }, (parseFloat(delay) + parseFloat(dur)) * 1000 + 200);
+      }
+      // small applause feedback text
+      const old = document.createElement('div');
+      old.textContent = 'Applause!';
+      old.style.position = 'fixed';
+      old.style.top = '18vh';
+      old.style.left = '50%';
+      old.style.transform = 'translateX(-50%)';
+      old.style.padding = '8px 14px';
+      old.style.borderRadius = '10px';
+      old.style.background = 'rgba(0,0,0,0.45)';
+      old.style.color = '#ffd54f';
+      old.style.fontWeight = '700';
+      old.style.zIndex = 9999;
+      old.style.opacity = '0';
+      old.style.transition = 'opacity 220ms ease';
+      document.body.appendChild(old);
+      requestAnimationFrame(()=> old.style.opacity = '1');
+      setTimeout(()=> {
+        old.style.opacity = '0';
+        setTimeout(()=> old.remove(), 300);
+      }, 900);
+    }
+
+    /***********************
+     * Spin both convenience
+     ***********************/
+    function spinBoth(){
+      // start both spins independently
+      spinNameStick();
+      // small delay so they don't finish exactly same time
+      setTimeout(()=> spinTaskWheel(), 120);
+    }
+
+    /***********************
+     * Wire up UI
+     ***********************/
+    document.getElementById('spinNameBtn').addEventListener('click', spinNameStick);
+    document.getElementById('spinTaskBtn').addEventListener('click', spinTaskWheel);
+    document.getElementById('spinBothBtn').addEventListener('click', spinBoth);
+
+    document.getElementById('addNameBtn').addEventListener('click', addName);
+    document.getElementById('removeNameBtn').addEventListener('click', removeName);
+    document.getElementById('addTaskBtn').addEventListener('click', addTask);
+    document.getElementById('removeTaskBtn').addEventListener('click', removeTask);
+
+    document.getElementById('applauseBtn').addEventListener('click', applause);
+
+    // keyboard: Enter in inputs adds
+    document.getElementById('newName').addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter') addName();
+    });
+    document.getElementById('newTask').addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter') addTask();
+    });
+
+    /***********************
+     * Initial render
+     ***********************/
+    drawNameWheel(0);
+    drawTaskWheel(0);
+
+    // accessibility: announce initial counts
+    nameResultEl.textContent = `Names: ${names.length}`;
+    taskResultEl.textContent = `Tasks: ${tasks.length}`;
+  </script>
+</body>
+</html>
