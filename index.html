@@ -1,568 +1,775 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Team Meeting Game</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Senior L2 Production Support Lead — Resume + Incident Template</title>
   <style>
     :root{
-      --accent: #ffd54f;
-      --bg1: #5b2c6f;
-      --bg2: #7b1fa2;
-      --bg3: #c62828;
-      --bg4: #2e7d32;
-    }
-    html,body{
-      height:100%;
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3), var(--bg4));
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#0ea5a4;
+      --accent-2:#06b6b4;
+      --muted:#94a3b8;
+      --text:#e6eef8;
+      --glass: rgba(255,255,255,0.03);
+      --gap:18px;
+      --radius:12px;
+      font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
-    .app {
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071028 0%, #071827 60%);color:var(--text);-webkit-font-smoothing:antialiased;}
+    /* Top solid header */
+    .topbar{
       width:100%;
-      max-width:1100px;
-      padding:22px;
-      box-sizing:border-box;
+      background:linear-gradient(90deg,#04202a 0%, #06323a 100%);
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      padding:12px 20px;
+      box-shadow:0 6px 18px rgba(2,6,23,0.6);
+      position:sticky;
+      top:0;
+      z-index:40;
       display:flex;
-      flex-direction:column;
+      align-items:center;
       gap:18px;
-      align-items:center;
-      backdrop-filter: blur(6px);
     }
-
-    h1{
-      margin:0;
-      font-size:22px;
-      letter-spacing:0.4px;
-      font-weight:600;
-      text-shadow:0 2px 10px rgba(0,0,0,0.35);
+    .top-left{display:flex;align-items:center;gap:14px;flex:1;}
+    .photo{
+      width:76px;height:76px;border-radius:10px;flex:0 0 76px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#042027;font-size:14px;box-shadow:0 6px 18px rgba(14,165,164,0.12);overflow:hidden;
     }
+    .top-meta{display:flex;flex-direction:column;gap:4px;}
+    .top-meta .name{font-size:18px;font-weight:700;color:var(--text);line-height:1;}
+    .top-meta .contact{font-size:13px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+    .top-actions{display:flex;align-items:center;gap:12px;margin-left:auto;}
+    .link-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
+    .link-btn:hover{border-color:var(--accent);color:var(--accent);}
 
-    .top-controls{
-      width:100%;
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:center;
+    /* Main layout */
+    .container{max-width:1200px;margin:28px auto;padding:0 20px;display:grid;grid-template-columns:320px 1fr;gap:28px;}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:20px;box-shadow:0 6px 18px rgba(2,6,23,0.6);backdrop-filter: blur(6px);}
+    header.profile{display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:10px;background:linear-gradient(90deg, rgba(14,165,164,0.03), rgba(14,165,164,0.01));}
+    .avatar{
+      width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#042027;font-size:22px;
+      box-shadow:0 6px 18px rgba(14,165,164,0.12);
     }
+    h1{font-size:20px;margin:0;color:var(--text);}
+    .headline{font-size:13px;color:var(--muted);margin-top:2px;}
+    .summary{margin-top:8px;font-size:13px;line-height:1.45;color:var(--text);}
+    .section-title{font-size:13px;color:var(--accent);font-weight:700;margin-bottom:10px;letter-spacing:0.6px;}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--glass);color:var(--muted);font-size:13px;}
+    .skills{display:flex;flex-wrap:wrap;gap:8px;}
+    .skill{background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:8px;font-size:13px;color:var(--text);border:1px solid rgba(255,255,255,0.02);}
+    .right .content-section{margin-bottom:18px;}
+    .job{padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02);}
+    .job h4{margin:0;font-size:15px;color:var(--text);}
+    .job .meta{font-size:13px;color:var(--muted);margin-top:6px;}
+    .job p{margin:10px 0 0 0;font-size:13px;color:var(--text);line-height:1.45;}
+    .bullets{margin:10px 0 0 0;padding-left:18px;color:var(--text);}
+    .bullets li{margin-bottom:8px;font-size:13px;}
+    footer{margin-top:18px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;}
 
-    .wheel-container{
-      width:100%;
-      display:flex;
-      gap:36px;
-      justify-content:center;
-      align-items:flex-start;
-      flex-wrap:wrap;
-    }
-
-    .wheel-card{
-      width:320px;
+    /* Right vertical thin bar for future code tabs */
+    .right-rail{
+      position:fixed;
+      right:12px;
+      top:120px;
+      width:56px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:8px;
       display:flex;
       flex-direction:column;
-      align-items:center;
-      gap:8px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.06));
-      padding:12px;
-      border-radius:12px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-      border:1px solid rgba(255,255,255,0.06);
-    }
-
-    canvas{
-      width:300px;
-      height:300px;
-      border-radius:50%;
-      background: rgba(255,255,255,0.03);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.45) inset;
-      border:6px solid rgba(255,255,255,0.06);
-    }
-
-    .row{
-      display:flex;
       gap:8px;
       align-items:center;
-      justify-content:center;
-      flex-wrap:wrap;
+      box-shadow:0 8px 24px rgba(2,6,23,0.5);
+      z-index:50;
+      border:1px solid rgba(255,255,255,0.03);
     }
+    .rail-btn{
+      width:40px;height:40px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px;text-align:center;padding:6px;cursor:pointer;
+    }
+    .rail-btn:hover{background:rgba(14,165,164,0.06);color:var(--accent);border-color:rgba(14,165,164,0.12);}
 
-    .btn{
-      background:#fff;
-      color:#111;
-      border:none;
-      padding:8px 12px;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:600;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-    }
-    .btn:active{ transform:translateY(1px); }
+    .rail-label{font-size:11px;color:var(--muted);margin-top:4px;text-align:center;max-width:64px;word-break:break-word;}
 
-    .input{
-      padding:8px 10px;
-      border-radius:8px;
-      border:none;
-      min-width:160px;
-      outline:none;
+    /* Incident panel (slide-in) */
+    .panel-backdrop{
+      position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:flex-start;justify-content:flex-end;padding:28px;z-index:120;
     }
+    .panel{
+      width:640px;max-width:calc(100% - 48px);background:linear-gradient(180deg,#071827,#06121a);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 18px 48px rgba(2,6,23,0.7);
+      transform:translateX(20px);opacity:0;transition:transform .22s ease,opacity .22s ease;
+    }
+    .panel.open{transform:translateX(0);opacity:1;}
+    .panel h3{margin:0 0 8px 0;color:var(--accent);font-size:16px;}
+    .form-row{display:flex;gap:10px;margin-bottom:10px;}
+    .form-row .field{flex:1;display:flex;flex-direction:column;gap:6px;}
+    label{font-size:12px;color:var(--muted);}
+    input[type="text"], input[type="datetime-local"], select, textarea{
+      background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);color:var(--text);padding:8px;border-radius:8px;font-size:13px;
+    }
+    textarea{min-height:90px;resize:vertical;}
+    .small{font-size:12px;color:var(--muted);}
+    .panel-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;}
+    .btn{background:var(--accent);color:#042027;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);}
+    .output-area{background:#071827;border:1px solid rgba(255,255,255,0.03);padding:12px;border-radius:8px;color:var(--text);font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;font-size:13px;white-space:pre-wrap;max-height:320px;overflow:auto;outline:none;}
+    .controls{display:flex;gap:8px;align-items:center;margin-top:8px;}
+    .copy-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:6px 10px;border-radius:8px;cursor:pointer;}
+    .copy-btn:hover{border-color:var(--accent);color:var(--accent);}
 
-    .result{
-      min-height:22px;
-      font-weight:700;
-      color:var(--accent);
-      text-shadow:0 2px 8px rgba(0,0,0,0.45);
+    /* Preview modal for beautiful email template */
+    .preview-modal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.65);z-index:140;padding:20px;
     }
+    .preview-card{
+      width:900px;max-width:100%;background:#ffffff;border-radius:10px;padding:18px;color:#0b1220;box-shadow:0 18px 48px rgba(2,6,23,0.6);border:1px solid rgba(2,6,23,0.06);
+    }
+    .preview-header{display:flex;align-items:center;gap:12px;border-bottom:1px solid #eef2f7;padding-bottom:12px;margin-bottom:12px;}
+    .preview-photo{width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#042027;font-weight:700;}
+    .preview-title{font-size:16px;font-weight:700;color:#0b1220;}
+    .preview-sub{font-size:13px;color:#475569;}
+    .preview-body{font-size:14px;color:#0b1220;line-height:1.5;padding:12px 6px;}
+    .preview-subject{font-weight:700;margin-bottom:8px;color:#0b1220;}
+    .preview-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;}
+    .btn-primary{background:var(--accent);color:#042027;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700;}
+    .btn-secondary{background:transparent;border:1px solid rgba(11,18,32,0.08);padding:8px 12px;border-radius:8px;cursor:pointer;}
 
-    .applause-row{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:center;
-      margin-top:6px;
+    /* Responsive */
+    @media (max-width:980px){
+      .container{grid-template-columns:1fr;padding:0 14px;}
+      .topbar{padding:12px;}
+      .photo{width:64px;height:64px;}
+      .right-rail{display:none;}
+      .panel{width:100%;max-width:720px;}
+      .preview-card{width:100%;}
     }
-
-    /* flower animation */
-    .flower {
-      position:fixed;
-      pointer-events:none;
-      font-size:22px;
-      will-change: transform, opacity;
-      animation: fall linear forwards;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.45);
-    }
-    @keyframes fall {
-      0% { transform: translateY(-10vh) rotate(0deg) scale(0.9); opacity:1; }
-      70% { opacity:1; }
-      100% { transform: translateY(110vh) rotate(360deg) scale(0.6); opacity:0; }
-    }
-
-    /* responsive */
-    @media (max-width:760px){
-      .wheel-card{ width:92%; }
-      canvas{ width:260px; height:260px; }
+    @media print{
+      .panel-backdrop,.right-rail,.preview-modal{display:none;}
+      body{background:white;color:black;}
+      .card{background:white;box-shadow:none;border:1px solid #ddd;}
     }
   </style>
 </head>
 <body>
-  <div class="app" role="application" aria-label="Team meeting game">
-    <h1>Team Meeting Game</h1>
-
-    <div class="wheel-container" aria-hidden="false">
-      <!-- Names card -->
-      <div class="wheel-card" id="namesCard">
-        <canvas id="nameCanvas" width="300" height="300" aria-label="Names wheel"></canvas>
-        <div class="row">
-          <button class="btn" id="spinNameBtn">Spin Names</button>
-          <button class="btn" id="spinBothBtn">Spin Both</button>
-        </div>
-        <div class="result" id="nameResult" aria-live="polite"></div>
-
-        <div class="row" style="margin-top:6px;">
-          <input id="newName" class="input" placeholder="Add or remove name" />
-          <button class="btn" id="addNameBtn">Add</button>
-          <button class="btn" id="removeNameBtn">Remove</button>
-        </div>
+  <!-- Top solid header: replace placeholder values with your real details -->
+  <div class="topbar" role="banner">
+    <div class="top-left">
+      <div class="photo" aria-hidden="true">
+        <!-- Replace with <img> when ready -->
+        <span style="font-size:13px;color:#042027;">Your Photo</span>
       </div>
 
-      <!-- Tasks card -->
-      <div class="wheel-card" id="tasksCard">
-        <canvas id="taskCanvas" width="300" height="300" aria-label="Tasks wheel"></canvas>
-        <div class="row">
-          <button class="btn" id="spinTaskBtn">Spin Tasks</button>
-        </div>
-        <div class="result" id="taskResult" aria-live="polite"></div>
-
-        <div class="row" style="margin-top:6px;">
-          <input id="newTask" class="input" placeholder="Add or remove task" />
-          <button class="btn" id="addTaskBtn">Add</button>
-          <button class="btn" id="removeTaskBtn">Remove</button>
+      <div class="top-meta" aria-label="Contact details">
+        <div class="name">Your Full Name</div>
+        <div class="contact">
+          <span>📍 Bengaluru, India</span>
+          <span>✉️ <a href="mailto:email@example.com" style="color:var(--muted);text-decoration:none;">email@example.com</a></span>
+          <span>📞 +91-XXXXXXXXXX</span>
+          <span><a class="link-btn" href="#" aria-label="LinkedIn profile">LinkedIn</a></span>
         </div>
       </div>
     </div>
 
-    <div class="applause-row">
-      <button class="btn" id="applauseBtn">👏 Applause</button>
-      <div style="color:rgba(255,255,255,0.85); font-weight:600;">Press to celebrate — flowers will sprinkle</div>
+    <div class="top-actions" aria-hidden="false">
+      <!-- Aligned to the right using margin-left:auto on .top-actions -->
+      <a class="link-btn" href="#" title="Download PDF (placeholder)">⬇ Download</a>
+      <a class="link-btn" href="#" title="Contact">✉ Contact</a>
+    </div>
+  </div>
+
+  <main class="container" role="main">
+    <!-- Left column: profile, skills, education -->
+    <aside class="card left" aria-labelledby="profile-heading">
+      <header class="profile">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="avatar" aria-hidden="true">SL</div>
+          <div>
+            <h1 id="profile-heading"><strong>Senior L2 Production Support Lead & SRE</strong></h1>
+            <div class="headline">12+ Years • BFSI & Investment Banking • Observability • Cloud Support</div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <strong>Operational leader</strong> focused on high system availability, toil reduction through automation, and robust ITIL practices. Experienced in global onshore/offshore delivery, 24/7 shift coverage, and mentoring teams to deliver stable, resilient platforms.
+        </div>
+      </header>
+
+      <section style="margin-top:18px;">
+        <div class="section-title">TECHNICAL SKILLS & TOOLS</div>
+        <div style="display:grid;grid-template-columns:1fr;gap:10px;">
+          <div>
+            <strong>Databases</strong>
+            <div class="pill" style="margin-top:8px;">Oracle (SQL/PLSQL); Sybase; DB2; Snowflake</div>
+          </div>
+          <div>
+            <strong>DevOps & Cloud</strong>
+            <div class="pill" style="margin-top:8px;">Kubernetes; Docker; Ansible; Git; CI/CD; AWS; Azure; UNIX; Linux; Shell; Python; VBA</div>
+          </div>
+          <div>
+            <strong>Monitoring & Scheduling</strong>
+            <div class="pill" style="margin-top:8px;">Prometheus; Grafana; Splunk; AppDynamics; Autosys; Control-M; Informatica; ServiceNow; JIRA; Power BI</div>
+          </div>
+          <div>
+            <strong>Leadership & Ops</strong>
+            <div class="pill" style="margin-top:8px;">ITIL; RCA; BCP/DR; SLA Management; Rota & Shift Management; Mentorship</div>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top:18px;">
+        <div class="section-title">EDUCATION</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.4;">
+          <strong>UVCE College, Bangalore University</strong><br />
+          Bachelor of Engineering in Computer Science and Engineering • 2007–2011 • CGPA: 7.3
+        </div>
+      </section>
+
+      <section style="margin-top:18px;">
+        <div class="section-title">LANGUAGES</div>
+        <div style="font-size:13px;color:var(--text);">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div><strong>English</strong> — Full Professional</div>
+            <div><strong>Hindi</strong> — Native</div>
+            <div><strong>Kannada</strong> — Native</div>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- Right column: professional summary and experience -->
+    <section class="card right" aria-labelledby="summary-heading">
+      <div class="content-section">
+        <div class="section-title">PROFESSIONAL SUMMARY</div>
+        <div id="summary-heading" style="font-size:14px;color:var(--text);line-height:1.6;">
+          <strong>Senior L2 Production Support Lead & SRE</strong> with 12+ years of experience in BFSI and Investment Banking across front, middle, and back office domains including recon and settlements. Proven expertise in Incident, Problem, and Change Management (ITIL), operational leadership for 24/7 coverage, rota management, and mentoring. Technical specialization in observability (Prometheus, Grafana, Splunk) and cloud support (AWS, Azure). Strategic focus on toil reduction via automation, maintaining KEDB/SOPs, and ensuring robust BCP/DR readiness. Strong track record in global delivery models to maximize system availability and stability.
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-title">WORK EXPERIENCE</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <article class="job" aria-labelledby="job1">
+            <h4 id="job1"><strong>Morgan Stanley</strong> — Senior Support Manager</h4>
+            <div class="meta">Bengaluru, India • Aug 2022 – Present</div>
+            <p>
+              Support Manager for L2 Technical & Functional Support (IAM). Lead technical operations for Identity & Access Management suites using SQL, Linux, Shell, and Autosys. Orchestrate high-priority incident response and drive RCA; host stakeholder bridge calls. Leverage Splunk, AppDynamics, and Prometheus for observability and proactive monitoring. Managed complex integrations, DR drills, weekend deployment support, and delivered quarterly value-add projects to improve reliability and ITIL maturity.
+            </p>
+          </article>
+
+          <article class="job" aria-labelledby="job2">
+            <h4 id="job2"><strong>Standard Chartered Bank</strong> — Support Manager</h4>
+            <div class="meta">Bengaluru, India • Sep 2021 – Aug 2022</div>
+            <p>
+              Senior L2 techno-functional analyst for global Enterprise Payment applications and gateways. Performed advanced RCA and data analysis using SQL, UNIX, and Shell scripting. Managed end-to-end incident lifecycle in an ITIL environment using BMC Remedy and Rundeck for automation. Ensured system stability and 100% SLA compliance through proactive monitoring and cross-functional collaboration.
+            </p>
+          </article>
+
+          <article class="job" aria-labelledby="job3">
+            <h4 id="job3"><strong>State Street Corporation</strong> — Senior Associate</h4>
+            <div class="meta">Bengaluru, India • Jul 2019 – Sep 2021</div>
+            <p>
+              L2 Support Lead for Middle Office & Hedge Fund products. Delivered technical support for STP trade flow onboarding using Sybase, SQL, and Unix/Shell scripting. Recognized for maintaining 100% SLA compliance while handling the region's highest volume of RITMs and complex trade setups.
+            </p>
+          </article>
+
+          <article class="job" aria-labelledby="job4">
+            <h4 id="job4"><strong>Epsilon (Publicis Groupe)</strong> — Senior Support Engineer</h4>
+            <div class="meta">Bengaluru, India • Jul 2017 – Jul 2019</div>
+            <p>
+              Provided L2 support using Oracle, SQL, and Shell scripting within ITIL processes. Led cross-functional syncs with Infra, Dev, QA, BA, and CRM teams. Spearheaded stabilization initiatives and served as SPOC lead for account and technical delivery.
+            </p>
+          </article>
+
+          <article class="job" aria-labelledby="job5">
+            <h4 id="job5"><strong>Societe Generale (SG GSC)</strong> — Support Manager</h4>
+            <div class="meta">Bengaluru, India • Apr 2015 – Jul 2017</div>
+            <p>
+              Delivered L2 support for Hedge Fund & Trade Flow applications using Oracle, Sybase, Unix/Shell, and Informatica. Managed incident resolution for traders, sales, and bankers across APAC, EMEA, and US. Led KT and process transition from Paris to Bengaluru to establish a stabilized offshore support model.
+            </p>
+          </article>
+
+          <article class="job" aria-labelledby="job6">
+            <h4 id="job6"><strong>HCL Technologies</strong> — Software Engineer</h4>
+            <div class="meta">Bengaluru, India • Oct 2011 – Mar 2015</div>
+            <p>
+              Provided technical resolution using SQL, Linux, Informatica, and Control-M. Orchestrated huddle boards for team delivery and achieved highest regional ticket throughput while maintaining 100% SLA compliance.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-title">SELECTED FOCUS AREAS</div>
+        <ul class="bullets" style="color:var(--text);">
+          <li><strong>Observability</strong> — Prometheus, Grafana, Splunk, AppDynamics for proactive monitoring and alerting.</li>
+          <li><strong>Cloud & Automation</strong> — AWS/Azure support, Kubernetes, Docker, Ansible, CI/CD pipelines to reduce toil.</li>
+          <li><strong>Operational Excellence</strong> — ITIL processes, RCA, KEDB/SOP maintenance, BCP/DR planning and drills.</li>
+          <li><strong>Leadership</strong> — Rota & shift management, 24/7 coverage, onshore/offshore collaboration, mentorship.</li>
+        </ul>
+      </div>
+
+      <footer>
+        <div style="font-size:13px;color:var(--muted);">Resume styled for LinkedIn / graphical presentation</div>
+        <div style="font-size:13px;color:var(--muted);">Last updated: 2026</div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Right vertical thin rail for future code tabs -->
+  <nav class="right-rail" aria-label="Quick code tabs">
+    <button id="open-incident" class="rail-btn" title="Incident template" aria-label="Incident template">🧾</button>
+    <div class="rail-label">Incident<br>Template</div>
+
+    <button id="play-game" class="rail-btn" title="Play online virtual team game" aria-label="Play online virtual team game">🎮</button>
+    <div class="rail-label">Play Online<br>Team Game</div>
+
+    <button id="learning-links" class="rail-btn" title="Learning links" aria-label="Learning links">📚</button>
+    <div class="rail-label">Learning<br>Links</div>
+
+    <button class="rail-btn" title="More" aria-label="More">➕</button>
+    <div class="rail-label">More</div>
+  </nav>
+
+  <!-- Incident panel (slide-in) -->
+  <div id="panel-backdrop" class="panel-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <aside id="incident-panel" class="panel" aria-labelledby="incident-title" tabindex="-1">
+      <h3 id="incident-title">Incident Template — Client Communication</h3>
+
+      <form id="incident-form" autocomplete="off" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="incident-id">Incident ID</label>
+            <input id="incident-id" name="incidentId" type="text" placeholder="INC-2026-0001" />
+          </div>
+          <div class="field">
+            <label for="severity">Severity</label>
+            <select id="severity" name="severity">
+              <option value="P1">P1 - Critical</option>
+              <option value="P2">P2 - High</option>
+              <option value="P3">P3 - Medium</option>
+              <option value="P4">P4 - Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="start-time">Start Time (Local)</label>
+            <input id="start-time" name="startTime" type="datetime-local" />
+          </div>
+          <div class="field">
+            <label for="reported-by">Reported By</label>
+            <input id="reported-by" name="reportedBy" type="text" placeholder="Name / Team" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="affected-services">Affected Services</label>
+            <input id="affected-services" name="affectedServices" type="text" placeholder="Service A; Service B; API Gateway" />
+          </div>
+          <div class="field">
+            <label for="impact">Business Impact</label>
+            <select id="impact" name="impact">
+              <option value="Full outage">Full outage</option>
+              <option value="Partial outage">Partial outage</option>
+              <option value="Degraded performance">Degraded performance</option>
+              <option value="Informational">Informational</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field" style="flex:1;">
+            <label for="root-cause">Root Cause (if known)</label>
+            <input id="root-cause" name="rootCause" type="text" placeholder="e.g., Database connectivity issue" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field" style="flex:1;">
+            <label for="mitigation">Mitigation / Workaround</label>
+            <textarea id="mitigation" name="mitigation" placeholder="Steps taken to mitigate impact (short bullet points)"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="next-steps">Next Steps</label>
+            <textarea id="next-steps" name="nextSteps" placeholder="Planned actions, owners, and ETA"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="eta">Estimated Resolution Time (ETA)</label>
+            <input id="eta" name="eta" type="datetime-local" />
+          </div>
+          <div class="field">
+            <label for="contact">Primary Contact</label>
+            <input id="contact" name="contact" type="text" placeholder="Name, Role, email / phone" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field" style="flex:1;">
+            <label for="notes">Additional Notes (optional)</label>
+            <textarea id="notes" name="notes" placeholder="Any other context for stakeholders"></textarea>
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <!-- Generate now creates a polished email preview modal -->
+          <button type="button" id="generate-btn" class="btn" title="Generate corporate-ready message">Generate & Preview</button>
+          <button type="button" id="close-panel" class="btn ghost" title="Close panel">Close</button>
+        </div>
+      </form>
+
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:12px 0;" />
+
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:13px;color:var(--muted);">Quick Plain Text Output</div>
+          <div class="controls">
+            <button id="copy-output" class="copy-btn" title="Copy to clipboard">Copy</button>
+            <button id="clear-output" class="copy-btn" title="Clear output">Clear</button>
+          </div>
+        </div>
+
+        <div id="output" class="output-area" role="region" aria-live="polite" aria-label="Generated incident message" tabindex="0">
+          <!-- Generated message will appear here -->
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Preview modal: polished email template ready to copy/send -->
+  <div id="preview-modal" class="preview-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="preview-card" role="document" aria-labelledby="preview-subject">
+      <div class="preview-header">
+        <div class="preview-photo" aria-hidden="true">SL</div>
+        <div>
+          <div class="preview-title" id="preview-title">Incident Notification</div>
+          <div class="preview-sub" id="preview-sub">Corporate client communication — polished template</div>
+        </div>
+      </div>
+
+      <div class="preview-body" id="preview-body">
+        <!-- Subject -->
+        <div class="preview-subject" id="preview-subject">[INC-XXXX] P1 Incident — Service — Impact</div>
+
+        <!-- Body content will be injected here -->
+        <div id="preview-content" style="background:#fbfdff;border-radius:8px;padding:12px;border:1px solid #eef2f7;">
+          <!-- dynamic content -->
+        </div>
+
+        <div class="preview-actions">
+          <button id="copy-preview" class="btn-primary">Copy Email</button>
+          <button id="close-preview" class="btn-secondary">Close</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    /***********************
-     * Data and state
-     ***********************/
-    let names = ["Alice","Bob","Charlie","Diana","Ethan","Fiona"];
-    let tasks = ["Tell a joke","Share a fun fact","Give a compliment","Do a quick stretch","Sing a line","Describe your weekend"];
-    let spinningName = false;
-    let spinningTask = false;
+    (function () {
+      // Elements
+      const openBtn = document.getElementById('open-incident');
+      const backdrop = document.getElementById('panel-backdrop');
+      const panel = document.getElementById('incident-panel');
+      const closePanelBtn = document.getElementById('close-panel');
+      const generateBtn = document.getElementById('generate-btn');
+      const outputEl = document.getElementById('output');
+      const copyBtn = document.getElementById('copy-output');
+      const clearBtn = document.getElementById('clear-output');
+      const form = document.getElementById('incident-form');
 
-    const nameCanvas = document.getElementById('nameCanvas');
-    const nameCtx = nameCanvas.getContext('2d');
-    const taskCanvas = document.getElementById('taskCanvas');
-    const taskCtx = taskCanvas.getContext('2d');
+      const previewModal = document.getElementById('preview-modal');
+      const previewContent = document.getElementById('preview-content');
+      const previewSubjectEl = document.getElementById('preview-subject');
+      const previewTitle = document.getElementById('preview-title');
+      const copyPreviewBtn = document.getElementById('copy-preview');
+      const closePreviewBtn = document.getElementById('close-preview');
 
-    const nameResultEl = document.getElementById('nameResult');
-    const taskResultEl = document.getElementById('taskResult');
-
-    /***********************
-     * Utility helpers
-     ***********************/
-    function clearCanvas(ctx){
-      ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
-    }
-
-    function drawSegmentedWheel(ctx, items, centerX, centerY, radius, angleOffset=0, labelFont='16px Arial', labelColor='#fff', styleHueOffset=0){
-      const n = items.length;
-      if(n === 0) return;
-      const arc = (2 * Math.PI) / n;
-      for(let i=0;i<n;i++){
-        const start = angleOffset + i*arc;
-        const end = angleOffset + (i+1)*arc;
-        ctx.beginPath();
-        // nicer color palette using HSL
-        const hue = (styleHueOffset + i * (360 / Math.max(n,6))) % 360;
-        ctx.fillStyle = `hsl(${hue} 70% 50% / 0.95)`;
-        ctx.moveTo(centerX, centerY);
-        ctx.arc(centerX, centerY, radius, start, end);
-        ctx.closePath();
-        ctx.fill();
-
-        // label
-        ctx.save();
-        ctx.translate(centerX, centerY);
-        const mid = start + (arc/2);
-        ctx.rotate(mid);
-        ctx.fillStyle = labelColor;
-        ctx.textAlign = 'right';
-        ctx.font = labelFont;
-        // wrap long text by trimming if necessary
-        let text = items[i];
-        if(text.length > 22) text = text.slice(0,19) + '...';
-        ctx.fillText(text, radius - 18, 8);
-        ctx.restore();
+      // Utility to safely get values
+      function safeVal(id) {
+        const el = document.getElementById(id);
+        return el ? (el.value || '').trim() : '';
       }
 
-      // decorative inner ring
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius - 36, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(0,0,0,0.12)';
-      ctx.fill();
-    }
-
-    /***********************
-     * Name wheel (static wheel, rotating stick)
-     ***********************/
-    function drawNameWheel(angle = 0){
-      const ctx = nameCtx;
-      clearCanvas(ctx);
-      const cx = ctx.canvas.width/2;
-      const cy = ctx.canvas.height/2;
-      const r = Math.min(cx,cy) - 6;
-      if(names.length === 0){
-        ctx.fillStyle = 'rgba(255,255,255,0.06)';
-        ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
-        ctx.fillStyle = '#fff';
-        ctx.font = '16px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('No names', cx, cy);
-        return;
-      }
-      drawSegmentedWheel(ctx, names, cx, cy, r, 0, '16px Arial', '#fff', 10);
-
-      // rotating stick drawn from center outward (points up at angle=0)
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(angle);
-      // stick
-      ctx.beginPath();
-      ctx.moveTo(0, 6);
-      ctx.lineTo(0, -r + 20);
-      ctx.strokeStyle = '#ffd54f';
-      ctx.lineWidth = 6;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-
-      // small arrowhead
-      ctx.beginPath();
-      ctx.moveTo(-8, -r + 28);
-      ctx.lineTo(0, -r + 12);
-      ctx.lineTo(8, -r + 28);
-      ctx.fillStyle = '#ffd54f';
-      ctx.fill();
-      ctx.restore();
-
-      // center hub
-      ctx.beginPath();
-      ctx.arc(cx, cy, 12, 0, Math.PI*2);
-      ctx.fillStyle = '#ffd54f';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(cx, cy, 6, 0, Math.PI*2);
-      ctx.fillStyle = '#7b1fa2';
-      ctx.fill();
-    }
-
-    function spinNameStick(){
-      if(spinningName) return;
-      if(names.length === 0){
-        nameResultEl.textContent = 'No names to pick';
-        return;
-      }
-      spinningName = true;
-      nameResultEl.textContent = '';
-      let angle = 0;
-      const totalSpin = Math.random() * 2200 + 1800; // degrees
-      const duration = 2200 + Math.random()*1200; // ms
-      const start = performance.now();
-
-      function step(now){
-        const t = Math.min(1, (now - start) / duration);
-        // ease out cubic
-        const ease = 1 - Math.pow(1 - t, 3);
-        const currentDeg = totalSpin * ease;
-        const currentRad = (currentDeg * Math.PI / 180);
-        angle = currentRad;
-        drawNameWheel(angle);
-        if(t < 1){
-          requestAnimationFrame(step);
-        } else {
-          // compute selected index
-          const n = names.length;
-          const arc = (2 * Math.PI) / n;
-          // pointer absolute angle relative to positive X axis:
-          // stick points to angle direction from top; absolute = -PI/2 + angle
-          let pointerAbs = -Math.PI/2 + angle;
-          pointerAbs = (pointerAbs % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
-          let index = Math.floor(pointerAbs / arc) % n;
-          // ensure index in range
-          index = (index + n) % n;
-          nameResultEl.textContent = 'Result: ' + names[index];
-          spinningName = false;
+      // Convert local datetime-local input to a readable UTC string
+      function formatDateLocalToUTCString(inputValue) {
+        if (!inputValue) return '';
+        try {
+          // Create a Date using the local timezone
+          const dt = new Date(inputValue);
+          if (!isNaN(dt.getTime())) return dt.toUTCString();
+          // fallback: append seconds if missing
+          const withSec = inputValue.length === 16 ? inputValue + ':00' : inputValue;
+          const dt2 = new Date(withSec);
+          if (!isNaN(dt2.getTime())) return dt2.toUTCString();
+          return inputValue;
+        } catch (e) {
+          return inputValue;
         }
       }
-      requestAnimationFrame(step);
-    }
 
-    /***********************
-     * Task wheel (spinning wheel under fixed top pointer)
-     ***********************/
-    function drawTaskWheel(angle = 0){
-      const ctx = taskCtx;
-      clearCanvas(ctx);
-      const cx = ctx.canvas.width/2;
-      const cy = ctx.canvas.height/2;
-      const r = Math.min(cx,cy) - 6;
-      if(tasks.length === 0){
-        ctx.fillStyle = 'rgba(255,255,255,0.06)';
-        ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
-        ctx.fillStyle = '#fff';
-        ctx.font = '16px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('No tasks', cx, cy);
-        return;
+      // Open/close panel
+      function openPanel() {
+        backdrop.style.display = 'flex';
+        backdrop.setAttribute('aria-hidden', 'false');
+        requestAnimationFrame(() => panel.classList.add('open'));
+        const firstInput = panel.querySelector('input, select, textarea, button');
+        if (firstInput) firstInput.focus();
       }
-      drawSegmentedWheel(ctx, tasks, cx, cy, r, angle, '14px Arial', '#fff', 200);
-
-      // fixed pointer at top
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(cx, cy - r + 10);
-      ctx.strokeStyle = '#ffd54f';
-      ctx.lineWidth = 6;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-
-      // arrowhead
-      ctx.beginPath();
-      ctx.moveTo(cx - 8, cy - r + 22);
-      ctx.lineTo(cx, cy - r + 6);
-      ctx.lineTo(cx + 8, cy - r + 22);
-      ctx.fillStyle = '#ffd54f';
-      ctx.fill();
-
-      // center hub
-      ctx.beginPath();
-      ctx.arc(cx, cy, 12, 0, Math.PI*2);
-      ctx.fillStyle = '#ffd54f';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(cx, cy, 6, 0, Math.PI*2);
-      ctx.fillStyle = '#2e7d32';
-      ctx.fill();
-    }
-
-    function spinTaskWheel(){
-      if(spinningTask) return;
-      if(tasks.length === 0){
-        taskResultEl.textContent = 'No tasks to pick';
-        return;
+      function closePanel() {
+        panel.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+        setTimeout(() => { backdrop.style.display = 'none'; }, 240);
       }
-      spinningTask = true;
-      taskResultEl.textContent = '';
-      let angle = 0;
-      const totalSpin = Math.random() * 2200 + 1800; // degrees
-      const duration = 2200 + Math.random()*1200; // ms
-      const start = performance.now();
 
-      function step(now){
-        const t = Math.min(1, (now - start) / duration);
-        const ease = 1 - Math.pow(1 - t, 3);
-        const currentDeg = totalSpin * ease;
-        const currentRad = (currentDeg * Math.PI / 180);
-        angle = currentRad;
-        drawTaskWheel(angle);
-        if(t < 1){
-          requestAnimationFrame(step);
-        } else {
-          // pointer absolute angle is -PI/2 (top)
-          // segments are at angle + i*arc .. angle+(i+1)*arc
-          const n = tasks.length;
-          const arc = (2 * Math.PI) / n;
-          // compute which segment contains pointerAbs (-PI/2)
-          // compute relative = (pointerAbs - angle) normalized
-          let pointerAbs = -Math.PI/2;
-          let relative = (pointerAbs - angle) % (2*Math.PI);
-          relative = (relative + 2*Math.PI) % (2*Math.PI);
-          let index = Math.floor(relative / arc) % n;
-          index = (index + n) % n;
-          taskResultEl.textContent = 'Result: ' + tasks[index];
-          spinningTask = false;
+      openBtn.addEventListener('click', openPanel);
+      closePanelBtn.addEventListener('click', closePanel);
+      backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closePanel(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') {
+        if (previewModal.style.display === 'flex') closePreview();
+        else closePanel();
+      }});
+
+      // Prevent form submit (we handle via JS)
+      form.addEventListener('submit', (e) => { e.preventDefault(); });
+
+      // Build plain text message (quick output)
+      function buildPlainText() {
+        const incidentId = safeVal('incident-id') || 'TBD';
+        const severity = safeVal('severity') || 'TBD';
+        const startTime = formatDateLocalToUTCString(safeVal('start-time')) || 'TBD';
+        const reportedBy = safeVal('reported-by') || 'TBD';
+        const affectedServices = safeVal('affected-services') || 'TBD';
+        const impact = safeVal('impact') || 'TBD';
+        const rootCause = safeVal('root-cause') || 'Under investigation';
+        const mitigation = safeVal('mitigation') || 'Workaround in place / mitigation ongoing';
+        const nextSteps = safeVal('next-steps') || 'Further investigation and remediation; owners assigned';
+        const eta = formatDateLocalToUTCString(safeVal('eta')) || 'TBD';
+        const contact = safeVal('contact') || 'TBD';
+        const notes = safeVal('notes');
+
+        const subject = `[${incidentId}] ${severity} Incident — ${affectedServices} — ${impact}`;
+        const lines = [
+          `Subject: ${subject}`,
+          ``,
+          `Summary:`,
+          `Incident ID: ${incidentId}`,
+          `Severity: ${severity}`,
+          `Start Time (UTC): ${startTime}`,
+          `Reported By: ${reportedBy}`,
+          `Affected Services: ${affectedServices}`,
+          `Business Impact: ${impact}`,
+          ``,
+          `Current Status:`,
+          `${mitigation}`,
+          ``,
+          `Root Cause:`,
+          `${rootCause}`,
+          ``,
+          `Next Steps / Action Items:`,
+          `${nextSteps}`,
+          ``,
+          `Estimated Resolution Time (ETA): ${eta}`,
+          ``,
+          `Primary Contact: ${contact}`,
+        ];
+
+        if (notes) {
+          lines.push('', 'Additional Notes:', notes);
+        }
+
+        lines.push('', 'Regards,', 'Support Team');
+
+        return { subject, text: lines.join('\n') };
+      }
+
+      // Build polished HTML email preview
+      function buildHtmlPreview() {
+        const incidentId = safeVal('incident-id') || 'TBD';
+        const severity = safeVal('severity') || 'TBD';
+        const startTime = formatDateLocalToUTCString(safeVal('start-time')) || 'TBD';
+        const reportedBy = safeVal('reported-by') || 'TBD';
+        const affectedServices = safeVal('affected-services') || 'TBD';
+        const impact = safeVal('impact') || 'TBD';
+        const rootCause = safeVal('root-cause') || 'Under investigation';
+        const mitigation = safeVal('mitigation') || 'Workaround in place / mitigation ongoing';
+        const nextSteps = safeVal('next-steps') || 'Further investigation and remediation; owners assigned';
+        const eta = formatDateLocalToUTCString(safeVal('eta')) || 'TBD';
+        const contact = safeVal('contact') || 'TBD';
+        const notes = safeVal('notes');
+
+        const subject = `[${incidentId}] ${severity} Incident — ${affectedServices} — ${impact}`;
+
+        // HTML structure for email body (clean, corporate)
+        const html = `
+          <div style="font-family:Inter, Arial, sans-serif;color:#0b1220;">
+            <p style="margin:0 0 8px 0;"><strong>Summary</strong></p>
+            <table style="width:100%;border-collapse:collapse;margin-bottom:12px;">
+              <tr><td style="width:160px;color:#475569;padding:6px 0;">Incident ID</td><td style="padding:6px 0;">${incidentId}</td></tr>
+              <tr><td style="color:#475569;padding:6px 0;">Severity</td><td style="padding:6px 0;">${severity}</td></tr>
+              <tr><td style="color:#475569;padding:6px 0;">Start Time (UTC)</td><td style="padding:6px 0;">${startTime}</td></tr>
+              <tr><td style="color:#475569;padding:6px 0;">Reported By</td><td style="padding:6px 0;">${reportedBy}</td></tr>
+              <tr><td style="color:#475569;padding:6px 0;">Affected Services</td><td style="padding:6px 0;">${affectedServices}</td></tr>
+              <tr><td style="color:#475569;padding:6px 0;">Business Impact</td><td style="padding:6px 0;">${impact}</td></tr>
+            </table>
+
+            <p style="margin:0 0 8px 0;"><strong>Current Status</strong></p>
+            <div style="background:#f8fafc;border:1px solid #eef2f7;padding:10px;border-radius:6px;margin-bottom:12px;">${escapeHtml(mitigation).replace(/\n/g,'<br>')}</div>
+
+            <p style="margin:0 0 8px 0;"><strong>Root Cause</strong></p>
+            <div style="margin-bottom:12px;color:#0b1220;">${escapeHtml(rootCause)}</div>
+
+            <p style="margin:0 0 8px 0;"><strong>Next Steps / Action Items</strong></p>
+            <div style="margin-bottom:12px;color:#0b1220;">${escapeHtml(nextSteps).replace(/\n/g,'<br>')}</div>
+
+            <table style="width:100%;border-collapse:collapse;margin-top:8px;">
+              <tr><td style="width:160px;color:#475569;padding:6px 0;">ETA (UTC)</td><td style="padding:6px 0;">${eta}</td></tr>
+              <tr><td style="color:#475569;padding:6px 0;">Primary Contact</td><td style="padding:6px 0;">${escapeHtml(contact)}</td></tr>
+            </table>
+
+            ${notes ? `<div style="margin-top:12px;"><strong>Additional Notes</strong><div style="margin-top:6px;background:#fbfdff;border:1px solid #eef2f7;padding:10px;border-radius:6px;">${escapeHtml(notes).replace(/\n/g,'<br>')}</div></div>` : ''}
+
+            <div style="margin-top:18px;color:#475569;">Regards,<br/>Support Team</div>
+          </div>
+        `;
+        return { subject, html };
+      }
+
+      // Escape HTML to avoid injection in preview
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      // Generate plain text and populate quick output
+      function populateQuickOutput() {
+        const { text } = buildPlainText();
+        outputEl.textContent = text;
+      }
+
+      // Show preview modal with polished HTML
+      function showPreview() {
+        const { subject, html } = buildHtmlPreview();
+        previewSubjectEl.textContent = subject;
+        previewContent.innerHTML = html;
+        previewModal.style.display = 'flex';
+        previewModal.setAttribute('aria-hidden', 'false');
+        // focus copy button for keyboard users
+        copyPreviewBtn.focus();
+      }
+
+      function closePreview() {
+        previewModal.style.display = 'none';
+        previewModal.setAttribute('aria-hidden', 'true');
+      }
+
+      // Wire generate button: populate quick output and open preview
+      generateBtn.addEventListener('click', () => {
+        populateQuickOutput();
+        showPreview();
+      });
+
+      // Copy quick plain text
+      copyBtn.addEventListener('click', async () => {
+        const text = outputEl.textContent.trim();
+        if (!text) {
+          copyBtn.textContent = 'Nothing to copy';
+          setTimeout(() => copyBtn.textContent = 'Copy', 1200);
+          return;
+        }
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = 'Copied';
+          setTimeout(() => copyBtn.textContent = 'Copy', 1400);
+        } catch (err) {
+          fallbackCopy(outputEl);
+        }
+      });
+
+      // Copy preview HTML as rich text and plain text (useful for email clients)
+      copyPreviewBtn.addEventListener('click', async () => {
+        // Copy both HTML and plain text to clipboard if supported
+        const html = previewContent.innerHTML;
+        const subject = previewSubjectEl.textContent;
+        const plain = outputEl.textContent.trim() || buildPlainText().text;
+
+        // Try Clipboard API with HTML support
+        if (navigator.clipboard && window.ClipboardItem) {
+          try {
+            const blobPlain = new Blob([plain], { type: 'text/plain' });
+            const blobHtml = new Blob([html], { type: 'text/html' });
+            const data = [new ClipboardItem({ 'text/plain': blobPlain, 'text/html': blobHtml })];
+            await navigator.clipboard.write(data);
+            copyPreviewBtn.textContent = 'Copied';
+            setTimeout(() => copyPreviewBtn.textContent = 'Copy Email', 1400);
+            return;
+          } catch (e) {
+            // fall through to fallback
+          }
+        }
+
+        // Fallback: copy plain text only
+        try {
+          await navigator.clipboard.writeText(plain);
+          copyPreviewBtn.textContent = 'Copied';
+          setTimeout(() => copyPreviewBtn.textContent = 'Copy Email', 1400);
+        } catch (e) {
+          // fallback selection copy
+          fallbackCopy(previewContent);
+        }
+      });
+
+      // Close preview
+      closePreviewBtn.addEventListener('click', closePreview);
+      previewModal.addEventListener('click', (e) => { if (e.target === previewModal) closePreview(); });
+
+      // Clear quick output
+      clearBtn.addEventListener('click', () => { outputEl.textContent = ''; });
+
+      // Fallback copy using selection
+      function fallbackCopy(el) {
+        try {
+          const range = document.createRange();
+          range.selectNodeContents(el);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          document.execCommand('copy');
+          sel.removeAllRanges();
+          return true;
+        } catch (e) {
+          return false;
         }
       }
-      requestAnimationFrame(step);
-    }
 
-    /***********************
-     * Add / Remove handlers
-     ***********************/
-    function addName(){
-      const v = document.getElementById('newName').value.trim();
-      if(!v) return;
-      names.push(v);
-      document.getElementById('newName').value = '';
-      drawNameWheel();
-    }
-    function removeName(){
-      const v = document.getElementById('newName').value.trim();
-      if(!v) return;
-      names = names.filter(x => x.toLowerCase() !== v.toLowerCase());
-      document.getElementById('newName').value = '';
-      drawNameWheel();
-    }
+      // Prefill start-time with current local datetime (user-friendly)
+      (function prefill() {
+        const now = new Date();
+        const tzOffset = now.getTimezoneOffset() * 60000;
+        const localISO = new Date(now - tzOffset).toISOString().slice(0,16);
+        const startInput = document.getElementById('start-time');
+        if (startInput && !startInput.value) startInput.value = localISO;
+      })();
 
-    function addTask(){
-      const v = document.getElementById('newTask').value.trim();
-      if(!v) return;
-      tasks.push(v);
-      document.getElementById('newTask').value = '';
-      drawTaskWheel();
-    }
-    function removeTask(){
-      const v = document.getElementById('newTask').value.trim();
-      if(!v) return;
-      tasks = tasks.filter(x => x.toLowerCase() !== v.toLowerCase());
-      document.getElementById('newTask').value = '';
-      drawTaskWheel();
-    }
-
-    /***********************
-     * Applause / flowers
-     ***********************/
-    const flowerEmojis = ['🌸','🌺','🌼','💐','🌷','🌻','🌹'];
-    function applause(){
-      // create many flowers across the top area
-      const count = 24;
-      for(let i=0;i<count;i++){
-        const el = document.createElement('div');
-        el.className = 'flower';
-        el.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
-        // random horizontal position across viewport
-        const left = Math.random() * 100;
-        el.style.left = left + 'vw';
-        // random delay and duration
-        const delay = (Math.random() * 0.6).toFixed(2) + 's';
-        const dur = (2.2 + Math.random()*1.6).toFixed(2) + 's';
-        el.style.animationDelay = delay;
-        el.style.animationDuration = dur;
-        // random size
-        const size = 18 + Math.random()*26;
-        el.style.fontSize = size + 'px';
-        document.body.appendChild(el);
-        // remove after animation
-        setTimeout(()=> {
-          el.remove();
-        }, (parseFloat(delay) + parseFloat(dur)) * 1000 + 200);
-      }
-      // small applause feedback text
-      const old = document.createElement('div');
-      old.textContent = 'Applause!';
-      old.style.position = 'fixed';
-      old.style.top = '18vh';
-      old.style.left = '50%';
-      old.style.transform = 'translateX(-50%)';
-      old.style.padding = '8px 14px';
-      old.style.borderRadius = '10px';
-      old.style.background = 'rgba(0,0,0,0.45)';
-      old.style.color = '#ffd54f';
-      old.style.fontWeight = '700';
-      old.style.zIndex = 9999;
-      old.style.opacity = '0';
-      old.style.transition = 'opacity 220ms ease';
-      document.body.appendChild(old);
-      requestAnimationFrame(()=> old.style.opacity = '1');
-      setTimeout(()=> {
-        old.style.opacity = '0';
-        setTimeout(()=> old.remove(), 300);
-      }, 900);
-    }
-
-    /***********************
-     * Spin both convenience
-     ***********************/
-    function spinBoth(){
-      // start both spins independently
-      spinNameStick();
-      // small delay so they don't finish exactly same time
-      setTimeout(()=> spinTaskWheel(), 120);
-    }
-
-    /***********************
-     * Wire up UI
-     ***********************/
-    document.getElementById('spinNameBtn').addEventListener('click', spinNameStick);
-    document.getElementById('spinTaskBtn').addEventListener('click', spinTaskWheel);
-    document.getElementById('spinBothBtn').addEventListener('click', spinBoth);
-
-    document.getElementById('addNameBtn').addEventListener('click', addName);
-    document.getElementById('removeNameBtn').addEventListener('click', removeName);
-    document.getElementById('addTaskBtn').addEventListener('click', addTask);
-    document.getElementById('removeTaskBtn').addEventListener('click', removeTask);
-
-    document.getElementById('applauseBtn').addEventListener('click', applause);
-
-    // keyboard: Enter in inputs adds
-    document.getElementById('newName').addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter') addName();
-    });
-    document.getElementById('newTask').addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter') addTask();
-    });
-
-    /***********************
-     * Initial render
-     ***********************/
-    drawNameWheel(0);
-    drawTaskWheel(0);
-
-    // accessibility: announce initial counts
-    nameResultEl.textContent = `Names: ${names.length}`;
-    taskResultEl.textContent = `Tasks: ${tasks.length}`;
+      // Placeholder handlers for other rail buttons
+      document.getElementById('play-game').addEventListener('click', () => {
+        alert('Play Online Team Game — placeholder action. Wire this to your game URL or modal.');
+      });
+      document.getElementById('learning-links').addEventListener('click', () => {
+        alert('Learning Links — placeholder action. Wire this to your curated resources.');
+      });
+    })();
   </script>
 </body>
 </html>
