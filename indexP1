@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FirstName LastName — Product, Work & Support</title>
+  <meta name="description" content="Senior L2 Production Support Lead & SRE — portfolio, support, knowledge base and team quiz." />
+
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#4f46e5;
+      --accent-2:#06b6d4;
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.04);
+      --radius:12px;
+      --maxw:1100px;
+      --gap:20px;
+      --shadow: 0 8px 30px rgba(2,6,23,0.6);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(180deg, #071029 0%, #071827 60%), var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:28px 20px;}
+
+    /* Header / Nav */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px 0;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-weight:800;color:white;box-shadow:var(--shadow);
+      font-size:18px;
+    }
+    nav{display:flex;gap:14px;align-items:center}
+    nav a{
+      color:var(--muted);text-decoration:none;font-weight:700;padding:8px 12px;border-radius:8px;
+    }
+    nav a:hover{color:white;background:var(--glass)}
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:start;
+      margin-top:18px;
+    }
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .eyebrow{color:var(--accent-2);font-weight:800;font-size:13px;letter-spacing:0.6px}
+    h1{margin:8px 0 12px;font-size:32px;line-height:1.05}
+    p.lead{color:var(--muted);margin:0 0 18px}
+
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{
+      background:linear-gradient(90deg,var(--accent),#7c3aed);
+      color:white;padding:12px 16px;border-radius:10px;border:none;font-weight:800;cursor:pointer;
+      box-shadow: 0 6px 18px rgba(79,70,229,0.18);
+      text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn.secondary{
+      background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:700;
+    }
+
+    /* Feature panel */
+    .panel{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:16px;
+      margin-top:22px;
+    }
+    .feature{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+    }
+    .feature h4{margin:6px 0 8px}
+    .feature p{color:var(--muted);margin:0;font-size:14px}
+
+    /* Right column card with live tiles */
+    .right-card{
+      padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      position:sticky; top:28px;
+    }
+    .stat{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .stat strong{font-size:18px}
+    .small{font-size:13px;color:var(--muted)}
+    .muted-block{color:var(--muted);font-size:13px;margin-top:6px}
+
+    .info-row{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .info-row .label{color:var(--muted);font-size:12px}
+    .info-row .value{font-weight:700}
+
+    .skill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+    .skill-pill{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+
+    /* Live tiles */
+    .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    .tile{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.03);
+      cursor:pointer;transition:transform 220ms ease, box-shadow 220ms ease;
+      min-height:72px;display:flex;flex-direction:column;justify-content:center;
+    }
+    .tile:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(2,6,23,0.6)}
+    .tile h5{margin:0 0 6px;font-size:14px}
+    .tile p{margin:0;color:var(--muted);font-size:13px}
+
+    .tile.active{outline:2px solid rgba(79,70,229,0.18);background:linear-gradient(90deg, rgba(79,70,229,0.06), rgba(6,182,212,0.03));}
+
+    .tile-content{margin-top:12px;padding-top:8px;border-top:1px dashed rgba(255,255,255,0.03);display:none}
+    .tile-content.show{display:block}
+
+    /* Sections */
+    section{margin-top:28px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .article-list .item{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.01);margin-bottom:12px}
+    .game-teaser{display:flex;gap:12px;align-items:center}
+
+    footer{margin-top:40px;padding:18px 0;color:var(--muted);text-align:center;font-size:13px}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr; padding-bottom:8px}
+      .panel{grid-template-columns:repeat(2,1fr)}
+      .grid-2{grid-template-columns:1fr}
+      .right-card{position:static}
+    }
+    @media (max-width:560px){
+      nav{display:none}
+      header{align-items:flex-start}
+      .logo{width:44px;height:44px}
+      h1{font-size:24px}
+      .panel{grid-template-columns:1fr}
+      .tiles{grid-template-columns:1fr}
+    }
+
+    /* subtle animations */
+    .fade-up{transform:translateY(8px);opacity:0;transition:all 520ms cubic-bezier(.2,.9,.3,1)}
+    .fade-up.show{transform:none;opacity:1}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="index.html">
+        <div class="logo" aria-hidden="true">FL</div>
+        <div>
+          <div style="font-weight:900">FirstName LastName</div>
+          <div class="small"><strong>Senior L2 Production Support Lead & SRE</strong> • 12+ Years Experience</div>
+          <div class="small" style="margin-top:6px">📞 <strong>1234567890</strong> &nbsp; ✉️ <strong>Hello@gmail.com</strong> &nbsp; 📍 <strong>Bangalore, India</strong></div>
+        </div>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="report.html">Report Issue</a>
+        <a href="articles.html">Knowledge</a>
+        <a href="game.html">Team Game</a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <main class="hero">
+      <div class="hero-card fade-up" id="heroLeft">
+        <div class="eyebrow">Profile Summary</div>
+        <h1><strong>Senior L2 Production Support Lead & SRE</strong> — Operational reliability at scale</h1>
+        <p class="lead">
+          Expert in BFSI & Investment Banking operations across Front/Middle/Back Office, Recon and Settlements. 12+ years delivering incident, problem and change management (ITIL), operational leadership for 24/7 shift coverage, and driving toil reduction through automation, BCP/DR and robust KEDB/SOP practices. Specialized in observability and cloud support to maintain high system availability.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn" href="register.html">Get in touch</a>
+          <a class="btn secondary" href="report.html">Report an issue</a>
+        </div>
+
+        <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
+          <div style="background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)">
+            <div class="small">Experience</div>
+            <strong>12+ years</strong>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)">
+            <div class="small">Domain</div>
+            <strong>BFSI & Investment Banking</strong>
+          </div>
+        </div>
+
+        <!-- Feature highlights -->
+        <div class="panel" style="margin-top:18px">
+          <div class="feature">
+            <h4><strong>Operational Leadership</strong></h4>
+            <p>Rota management, 24/7 shift coverage, incident response, RCA and mentorship for global delivery teams.</p>
+          </div>
+          <div class="feature">
+            <h4><strong>Observability & Cloud</strong></h4>
+            <p>Prometheus, Grafana, Splunk expertise; cloud support across AWS and Azure for resilient systems.</p>
+          </div>
+          <div class="feature">
+            <h4><strong>Toil Reduction</strong></h4>
+            <p>Automation-first approach using scripting, CI/CD, and runbook/KEDB maintenance to reduce manual work.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="right-card fade-up" id="heroRight" aria-labelledby="profile-summary">
+        <div class="stat">
+          <div>
+            <div class="small">Location</div>
+            <strong>Bangalore, India</strong>
+          </div>
+          <div class="small">• Open to collaboration</div>
+        </div>
+
+        <!-- Live tiles: Experience / Skills / Education / Languages -->
+        <div class="tiles" role="tablist" aria-label="Profile quick tiles">
+          <div class="tile" data-target="tile-exp" role="tab" tabindex="0" aria-selected="true">
+            <h5><strong>Experience Highlights</strong></h5>
+            <p>Key roles & leadership across global banks and tech firms.</p>
+          </div>
+
+          <div class="tile" data-target="tile-skill" role="tab" tabindex="0" aria-selected="false">
+            <h5><strong>Technical Skills</strong></h5>
+            <p>Observability, Cloud, DevOps, Databases, Automation.</p>
+          </div>
+
+          <div class="tile" data-target="tile-edu" role="tab" tabindex="0" aria-selected="false">
+            <h5><strong>Education</strong></h5>
+            <p>UVCE College — BE Computer Science & Engineering</p>
+          </div>
+
+          <div class="tile" data-target="tile-lang" role="tab" tabindex="0" aria-selected="false">
+            <h5><strong>Languages</strong></h5>
+            <p>English, Hindi, Urdu, Kannada</p>
+          </div>
+        </div>
+
+        <!-- Tile content panels -->
+        <div id="tile-exp" class="tile-content show" aria-live="polite">
+          <div style="margin-top:8px">
+            <div style="margin-bottom:8px"><strong>Morgan Stanley</strong><div class="small"><strong>Senior Support Manager</strong> | Aug 2022 – Present</div><div class="small" style="margin-top:6px">Lead L2 technical & functional support for IAM; drive incident response, RCA, observability and DR drills.</div></div>
+
+            <div style="margin-bottom:8px"><strong>Standard Chartered Bank</strong><div class="small"><strong>Support Manager</strong> | Sep 2021 – Aug 2022</div><div class="small" style="margin-top:6px">L2 techno-functional support for enterprise payment applications; operational automation and SLA-driven monitoring.</div></div>
+
+            <div style="margin-bottom:8px"><strong>State Street Corporation</strong><div class="small"><strong>Senior Associate</strong> | Jul 2019 – Sep 2021</div><div class="small" style="margin-top:6px">Middle office & hedge fund support; maintained 100% SLA compliance.</div></div>
+          </div>
+        </div>
+
+        <div id="tile-skill" class="tile-content" aria-hidden="true">
+          <div style="margin-top:8px">
+            <div style="margin-bottom:8px"><strong>Databases</strong><div class="small">Oracle (SQL/PLSQL), Sybase, DB2, Snowflake</div></div>
+            <div style="margin-bottom:8px"><strong>DevOps & Cloud</strong><div class="small">Kubernetes, Docker, Ansible, Git, CI/CD, AWS, Azure, UNIX/Linux, Shell, Python, VBA</div></div>
+            <div style="margin-bottom:8px"><strong>Monitoring & Scheduling</strong><div class="small">Prometheus, Grafana, Splunk, Autosys, Control-M, Informatica, ServiceNow, JIRA, Power BI</div></div>
+            <div style="margin-bottom:8px"><strong>Leadership & Ops</strong><div class="small">ITIL, RCA, BCP/DR, SLA Management, Rota & Shift Management, Mentorship</div></div>
+          </div>
+        </div>
+
+        <div id="tile-edu" class="tile-content" aria-hidden="true">
+          <div style="margin-top:8px">
+            <strong>UVCE College, Bangalore University</strong>
+            <div class="small">Bachelor of Engineering in Computer Science and Engineering | 2007–2011 | CGPA: 7.3</div>
+          </div>
+        </div>
+
+        <div id="tile-lang" class="tile-content" aria-hidden="true">
+          <div style="margin-top:8px">
+            <div class="small">English (Full Professional Proficiency)</div>
+            <div class="small">Hindi & Urdu (Native/Bilingual Proficiency)</div>
+            <div class="small">Kannada (Native Proficiency)</div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px">
+          <div class="small"><strong>Quick links</strong></div>
+          <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+            <a class="btn secondary" href="report.html">Report</a>
+            <a class="btn secondary" href="tickets.html">View Tickets</a>
+            <a class="btn secondary" href="articles.html">Knowledge</a>
+            <a class="btn secondary" href="game.html">Play Game</a>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Two-column content -->
+    <section class="grid-2">
+      <div class="card">
+        <h3><strong>Selected Experience (summary)</strong></h3>
+        <p class="small">Concise role summaries for quick scanning; full details available in the Experience tile.</p>
+
+        <div style="margin-top:12px">
+          <div style="margin-bottom:12px">
+            <strong>Morgan Stanley</strong>
+            <div class="small"><strong>Senior Support Manager</strong> | Aug 2022 – Present</div>
+          </div>
+
+          <div style="margin-bottom:12px">
+            <strong>Standard Chartered Bank</strong>
+            <div class="small"><strong>Support Manager</strong> | Sep 2021 – Aug 2022</div>
+          </div>
+
+          <div style="margin-bottom:12px">
+            <strong>State Street Corporation</strong>
+            <div class="small"><strong>Senior Associate</strong> | Jul 2019 – Sep 2021</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><strong>Skills Snapshot</strong></h3>
+        <p class="small">Quick glance at core technical strengths; click the Technical Skills tile for full list.</p>
+
+        <div style="margin-top:12px" class="skill-list">
+          <div class="skill-pill">Prometheus</div>
+          <div class="skill-pill">Grafana</div>
+          <div class="skill-pill">Splunk</div>
+          <div class="skill-pill">AWS</div>
+          <div class="skill-pill">Azure</div>
+          <div class="skill-pill">Kubernetes</div>
+          <div class="skill-pill">SQL</div>
+          <div class="skill-pill">Shell</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Knowledge & Game teaser -->
+    <section>
+      <div class="card game-teaser">
+        <div style="flex:1">
+          <h3><strong>Knowledge & Support</strong></h3>
+          <p class="small">Curated troubleshooting articles, runbooks and quick guides to reduce incident resolution time and empower teams.</p>
+          <div style="margin-top:12px">
+            <a class="btn" href="articles.html">Read Knowledge</a>
+            <a class="btn secondary" href="report.html">Report an Issue</a>
+          </div>
+        </div>
+        <div style="width:220px;text-align:center">
+          <div style="background:linear-gradient(135deg,#7c3aed,#06b6d4);padding:18px;border-radius:12px;color:white;box-shadow:var(--shadow)">
+            <div style="font-size:22px;font-weight:800">Team Quiz</div>
+            <div class="small" style="opacity:0.9;margin-top:6px">3 questions • quick team break</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="small">© <strong>FirstName LastName</strong> — Senior L2 Production Support Lead & SRE • Bangalore, India • Demo site</div>
+    </footer>
+  </div>
+
+  <script>
+    // Simple reveal animation
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(()=> {
+        document.querySelectorAll('.fade-up').forEach(el => el.classList.add('show'));
+      }, 120);
+
+      // Tile interaction: click or keyboard to toggle content panels
+      const tiles = document.querySelectorAll('.tile');
+      tiles.forEach(tile => {
+        tile.addEventListener('click', () => activateTile(tile));
+        tile.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateTile(tile); }
+        });
+      });
+
+      function activateTile(tile) {
+        // deactivate all
+        tiles.forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tile-content').forEach(c => { c.classList.remove('show'); c.setAttribute('aria-hidden','true'); });
+
+        // activate selected
+        tile.classList.add('active');
+        const target = tile.getAttribute('data-target');
+        const panel = document.getElementById(target);
+        if (panel) { panel.classList.add('show'); panel.setAttribute('aria-hidden','false'); }
+      }
+
+      // default: activate first tile
+      if (tiles.length) activateTile(tiles[0]);
+    });
+  </script>
+</body>
+</html>
