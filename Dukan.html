@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2-Wheeler Sale Bill</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 20px;
+      color: #222;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .header {
+      text-align: center;
+      background: linear-gradient(to right, #d32f2f, #388e3c);
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .meta {
+      text-align: right;
+      font-size: 0.9em;
+      margin-bottom: 15px;
+      color: #555;
+    }
+
+    .section-title {
+      font-size: 1.1em;
+      margin: 20px 0 10px;
+      color: #388e3c;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .split {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-bottom: 15px;
+    }
+
+    .column {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+      color: #333;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #bbb;
+      border-radius: 5px;
+      background: #fcfcfc;
+      font-size: 0.95em;
+      margin-bottom: 10px;
+    }
+
+    .address-box {
+      height: 50px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .field {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .disclaimer-box {
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 0.9em;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+
+    button {
+      background: #388e3c;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.95em;
+      cursor: pointer;
+      margin-top: 15px;
+      margin-right: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85em;
+      color: #555;
+    }
+
+    @media print {
+      button { display: none; }
+      body { zoom: 85%; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h2>SuperTech Vehicle Dealership</h2>
+      <p>987 Motorway Lane, Bengaluru South • 📞 +91 98765 43210 • ✉️ vehicles@supertech.com</p>
+    </div>
+
+    <div class="meta">
+      Bill No: <strong>#TW20250714</strong><br>
+      Date: <strong><script>document.write(new Date().toLocaleString());</script></strong>
+    </div>
+
+    <form id="saleForm">
+      <div class="section-title">Buyer & Seller Information</div>
+      <div class="split">
+        <div class="column">
+          <label>Seller Name:</label><input type="text" name="sellerName" />
+          <label>Contact:</label><input type="text" name="sellerContact" />
+          <label>Address:</label><textarea class="address-box" name="sellerAddress"></textarea>
+          <label>POIA:</label><input type="text" name="sellerPOIA" />
+        </div>
+        <div class="column">
+          <label>Buyer Name:</label><input type="text" name="buyerName" />
+          <label>Contact:</label><input type="text" name="buyerContact" />
+          <label>Address:</label><textarea class="address-box" name="buyerAddress"></textarea>
+          <label>POIA:</label><input type="text" name="buyerPOIA" />
+        </div>
+      </div>
+
+      <div class="section-title">Vehicle Information</div>
+      <div class="grid">
+        <div><label>Make:</label><input type="text" name="make" /></div>
+        <div><label>Model:</label><input type="text" name="model" /></div>
+        <div><label>Year:</label><input type="number" name="year" /></div>
+        <div><label>Reg No.:</label><input type="text" name="regNo" /></div>
+        <div><label>Chassis No.:</label><input type="text" name="chassisNo" /></div>
+        <div><label>Engine No.:</label><input type="text" name="engineNo" /></div>
+        <div><label>Fuel Type:</label><input type="text" name="fuelType" /></div>
+        <div><label>Color:</label><input type="text" name="color" /></div>
+        <div><label>Condition:</label><input type="text" name="condition" /></div>
+        <div><label>Kilometers:</label><input type="text" name="kilometers" /></div>
+      </div>
+
+      <div class="section-title">Payment Summary</div>
+      <div class="grid">
+        <div><label>Advance:</label><input type="number" name="advance" /></div>
+        <div><label>Balance:</label><input type="number" name="balance" /></div>
+        <div><label>Commission:</label><input type="number" name="commission" /></div>
+        <div><label>Transfer Fee:</label><input type="number" name="transferFee" /></div>
+        <div><label>Total Amount:</label><input type="number" name="totalAmount" /></div>
+      </div>
+
+      <div class="section-title">Terms & Conditions</div>
+      <div class="disclaimer-box">
+        <strong>Terms:</strong> This vehicle is sold as-is. Buyer has inspected and accepted the condition. No warranties are implied or provided. Buyer is responsible for confirming validity of documents and pending dues (insurance, taxes, fines).<br><br>
+        <strong>Disclaimer:</strong> The seller is not liable for mechanical, cosmetic, or legal disputes post-sale. Transfer of ownership will be initiated after full payment. Buyer agrees to register the vehicle within regulatory timelines.
+      </div>
+
+      <div class="section-title">Signatures</div>
+      <div class="row">
+        <div class="field"><label>Buyer Signature:</label><input type="text" name="buyerSignature" /></div>
+        <div class="field"><label>Seller Signature:</label><input type="text" name="sellerSignature" /></div>
+        <div class="field"><label>Witness Signature:</label><input type="text" name="witnessSignature" /></div>
+        <div class="field"><label>Date:</label><input type="date" name="signatureDate" /></div>
+      </div>
+
+      <button type="button" onclick="window.print()">🖨️ Print Bill</button>
+      <button type="submit">📤 Save to Google Sheets</button>
+    </form>
+
+    <div class="footer">
+      &copy; SuperTech Vehicle Dealership — Reliable • Detailed • Print-Ready
+    </div>
+  </div>
+
+    <script>
+    document.getElementById("saleForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const params = new URLSearchParams(formData).toString();
+
+      fetch("https://script.google.com/macros/s/AKfycbzo2FBkBVR15Mp7x0U-ceRpYvYPi4w15K0qNii_ZNsO9awKga6zu5eCTaT4pNYIyRXd/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("✅ Information saved to Google Sheets.");
+        } else {
+          alert("❌ Error saving data. Please check the URL or script.");
+        }
+      })
+      .catch(error => alert("⚠️ Network error. Check your connection or script URL."));
+    });
+  </script>
+</body>
+</html>
